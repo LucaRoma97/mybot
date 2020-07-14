@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find my_bot_description)/urdf/mybot.xacro'"/>
+
+  <!-- send fake joint values -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="False"/>
+  </node>
+
+  <!-- Combine joint values -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+
+  <!-- Show in Rviz   -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find my_bot_description)/rviz/ar_track_first.rviz"/>
+
+
+   <!-- The path_ekf_plotter node -->	
+   <node name="path_ekf_plotter" type="path_ekf_plotter.py" pkg="odom_to_trajectory">
+   </node>
+  
+   <!-- The path_odom_plotter node -->
+   <node name="path_odom_plotter" type="path_odom_plotter.py" pkg="odom_to_trajectory">
+   </node>
+
+</launch>
